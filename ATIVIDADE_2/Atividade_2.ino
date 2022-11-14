@@ -82,8 +82,7 @@ void limiteTemperatura(float temp){
 }
 
 void iluminar(){
-  float lux = map(analogRead(ldr), 969, 49, 0, 225 * 3); //mapeando para PWM
-	Serial.println(lux);
+  float lux = map(analogRead(ldr), 969, 49, 225 * 3, 0); //mapeando para PWM
   if(lux <= 225){
     analogWrite(l1, lux);
     analogWrite(l2, 0);

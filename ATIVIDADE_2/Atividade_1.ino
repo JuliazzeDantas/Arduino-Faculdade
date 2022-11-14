@@ -3,9 +3,9 @@
 
 
 #define ledTemp 11
-#define ledLuz2 10
-#define ledLuz3 6
-#define ledLuz4 5
+#define l1 10
+#define l2 6
+#define l3 5
 
 #define buzzer 2
 
@@ -18,9 +18,9 @@
 void setup()
 {
   pinMode(ledTemp, OUTPUT);
-  pinMode(ledLuz2, OUTPUT);
-  pinMode(ledLuz3, OUTPUT);
-  pinMode(ledLuz4, OUTPUT);
+  pinMode(l1, OUTPUT);
+  pinMode(l2, OUTPUT);
+  pinMode(l3, OUTPUT);
  
   pinMode(buzzer, OUTPUT);
   
@@ -81,15 +81,34 @@ void limiteTemperatura(float temp){
   }
 }
 
+void iluminar(){
+  float lux = map(analogRead(ldr), 969, 49, 0, 225 * 3); //mapeando para PWM
+	Serial.println(lux);
+  if(lux <= 225){
+    analogWrite(l1, lux);
+    analogWrite(l2, 0);
+    analogWrite(l3, 0);
+  }
+  else{
+    if(lux <= 225 * 2){
+      analogWrite(l1, 225);
+      analogWrite(l2, lux - 225);
+      analogWrite(l3, 0);
+    }
+    else{
+      analogWrite(l1, 225);
+      analogWrite(l2, 225);
+      analogWrite(l3, lux - 450);
+    }
+  }
+  
+}
+
 void loop()
 {
   
-  //medirTemperatura(); // chama a função que vê a média de temperatua
+  medirTemperatura(); // chama a função que vê a média de temperatua
+  iluminar();
 
-
-  //ldr: 49 - 969
-  float lux = analogRead(ldr);
-  float vout = ;
-  Serial.println(vout);
   
 }

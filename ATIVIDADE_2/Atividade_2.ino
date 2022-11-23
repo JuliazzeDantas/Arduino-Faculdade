@@ -51,13 +51,13 @@ void mediaTemperatura(float temperatura[]){
 void medirTemperatura(){
   if(millis() - tempoTemp >= 100){ // Guardando as 10 últimas temperaturas a cada 100 ms
     quantidadeTemp = (quantidadeTemp + 1) % 10;
-    temperatura[quantidadeTemp] = ((0.48875855321*analogRead(tmp))-50); // Se for um LM35, multiplicar por  0.1075268817
+    temperatura[quantidadeTemp] = ((0.48875855327 *analogRead(tmp)) - 50); // Se for um LM35, multiplicar por  0.1075268817
     tempoTemp = millis();
     if(millis() - tempoMedia >= 1000){ //Mostrando a média da temperatura a cada 1 seg
-    	Serial.println("---------------");	
-      	mediaTemperatura(temperatura);
-      	Serial.println("---------------");
-  	}
+      Serial.println("---------------");  
+        mediaTemperatura(temperatura);
+        Serial.println("---------------");
+    }
   }
 }
 
@@ -68,21 +68,19 @@ void limiteTemperatura(float temp){
   float potToTemp = aux * 50.0 / 1023.0;
   Serial.print("A Temperatura limite e': ");
   Serial.println(potToTemp);
-  Serial.print("A Temperatura atual e': ");
-  Serial.println(temp);
   if(potToTemp <= temp){
     Serial.println("Temperatura excede o limite estabelecido. CUIDADO!");
     tone(buzzer, 440, 1000);
     digitalWrite(ledTemp, HIGH);
   }
   else{
-  	float razao = (temp/potToTemp) * 225;
+    float razao = (temp/potToTemp) * 225;
     analogWrite(ledTemp, razao);
   }
 }
 
 void iluminar(){
-  float lux = map(analogRead(ldr), 969, 49, 225 * 3, 0); //mapeando para PWM
+  float lux = map(analogRead(ldr), 969, 500, 225 * 3, 0); //mapeando para PWM
   if(lux <= 225){
     analogWrite(l1, lux);
     analogWrite(l2, 0);
@@ -105,9 +103,9 @@ void iluminar(){
 
 void loop()
 {
-  
-  medirTemperatura(); // chama a função que vê a média de temperatua
   iluminar();
+  medirTemperatura(); // chama a função que vê a média de temperatua
+  
 
   
 }
